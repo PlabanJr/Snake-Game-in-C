@@ -7,7 +7,7 @@
 #define level3 60
 #define level4 80
 #define level5 100
-#define p[] = {1,2}
+
 
 /*Structure for all sort of objects - Food, mines & walls*/
 struct obj
@@ -357,7 +357,7 @@ int play(struct snake **snake_head,struct obj *apple,int hash[width][height],cha
     display_board(snake_head,apple,board,hash,score);
   }
   while(game_over != 1 && score != level_score);
-  
+
   return game_over;
 }
 
