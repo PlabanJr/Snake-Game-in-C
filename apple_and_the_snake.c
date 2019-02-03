@@ -15,6 +15,7 @@ struct obj
   int x,y;
 };
 
+
 /*Structure for the Snake*/
 struct snake
 {
@@ -23,11 +24,13 @@ struct snake
   struct snake *next;
 };
 
+
 /*Function that generates the initial Snake*/
 struct snake *initial_snake(struct snake *snake_head,int hash[width][height])
 {
   int count;
   struct snake *node,*traverser;
+
   for(count = 0;count < 4;count++)
   {
     node = (struct snake*)malloc(sizeof(struct snake));
@@ -67,6 +70,7 @@ struct snake *initial_snake(struct snake *snake_head,int hash[width][height])
   return snake_head;
 }
 
+
 /*Function that generates the initial Food*/
 struct obj *initial_food(int hash[width][height])
 {
@@ -82,6 +86,7 @@ struct obj *initial_food(int hash[width][height])
 
   return node;
 }
+
 
 /*Function that generates the initial Board*/
 void initial_board(char board[width][height])
@@ -106,6 +111,7 @@ void initial_board(char board[width][height])
   }
 }
 
+
 /*Function that checks for game over condition*/
 int is_game_over(int x,int y,int hash[width][height])
 {
@@ -117,6 +123,7 @@ int is_game_over(int x,int y,int hash[width][height])
   return game_over;
 }
 
+
 /*Function that generates the different objects: Food, walls and mines*/
 struct obj *generate_obj()
 {
@@ -125,6 +132,7 @@ struct obj *generate_obj()
   poison->y = rand() % (37 + 1 - 2) + 2;
   return poison;
 }
+
 
 /*Function that updates food co-ordinates in the hash table*/
 void update_food(int hash[width][height],struct obj *apple)
@@ -148,6 +156,7 @@ void update_snake(char board[width][height],struct snake **snake_head)
   }
 }
 
+
 /*Function that increases the snake length upon eating food*/
 void grow(struct snake **snake_head,int hash[width][height])
 {
@@ -163,6 +172,7 @@ void grow(struct snake **snake_head,int hash[width][height])
   traverser->value = '*';
   traverser->next = node;
 }
+
 
 /*Function that makes the snake move upon pressing: a,s,d,w*/
 int move(struct snake **snake_head,int hash[width][height],char direction,struct obj *apple,char board[width][height])
@@ -236,6 +246,7 @@ int move(struct snake **snake_head,int hash[width][height],char direction,struct
 }
 
 
+
 /*Function that makes the snake to pass through one boundary
  and enter through the opposite boundary*/
 void boundary_pass(struct snake **snake_head,int hash[width][height]) 
@@ -266,6 +277,7 @@ void boundary_pass(struct snake **snake_head,int hash[width][height])
   }
 }
 
+
 /*Function to print game related instructions*/
 void print_instructions(int score)
 {
@@ -295,6 +307,7 @@ void print_instructions(int score)
   printf("\n");
 }
 
+
 /*Function that displays the playing board*/
 void display_board(struct snake **snake_head,struct obj *apple,char board[width][height],int hash[width][height],int score)
 {
@@ -322,17 +335,19 @@ void display_board(struct snake **snake_head,struct obj *apple,char board[width]
   printf("Score: %d\n",score);
 }
 
+
 /*Function that handles direction inputs and score*/
 int play(struct snake **snake_head,struct obj *apple,int hash[width][height],char board[width][height],int level_score)
 {
   int game_over = 0;
   static int score = 0;
   char direction;
+
   do
   {
     scanf("%c",&direction);
     while(getchar() != '\n');
-    game_over = move(snake_head,hash,direction,apple,board);
+      game_over = move(snake_head,hash,direction,apple,board);
 
     if(game_over == 2)
       score++;
@@ -342,6 +357,7 @@ int play(struct snake **snake_head,struct obj *apple,int hash[width][height],cha
     display_board(snake_head,apple,board,hash,score);
   }
   while(game_over != 1 && score != level_score);
+  
   return game_over;
 }
 
@@ -357,6 +373,7 @@ void update_mine(int hash[width][height])
   hash[poison->x][poison->y] = 3;
 }
 
+
 /*Function that creates boundary in level 4*/
 void create_boundary(int hash[width][height])
 {
@@ -371,6 +388,7 @@ void create_boundary(int hash[width][height])
     }
   }
 }
+
 
 /*Function that updates wall co-ordinates to the hash*/
 void update_wall(int hash[width][height])
@@ -406,6 +424,7 @@ void update_wall(int hash[width][height])
   }
 }
 
+
 /*Function that handles game in level 5*/
 void level_5(struct snake **snake_head,struct obj *apple,int hash[width][height],char board[width][height])
 { 
@@ -417,6 +436,7 @@ void level_5(struct snake **snake_head,struct obj *apple,int hash[width][height]
    else if(state != 1)
     printf("You Win!\n");
 }
+
 
 /*Function that handles game in level 4*/
 void level_4(struct snake **snake_head,struct obj *apple,int hash[width][height],char board[width][height])
@@ -431,10 +451,11 @@ void level_4(struct snake **snake_head,struct obj *apple,int hash[width][height]
     level_5(snake_head,apple,hash,board);
 }
 
+
 /*Function that handles game in level 3*/
 void level_3(struct snake **snake_head,struct obj *apple,int hash[width][height],char board[width][height])
 { 
-  for(int obj_count=0;obj_count<3;obj_count++)
+  for(int obj_count = 0;obj_count < 3;obj_count++)
     update_mine(hash);
 
   int state = play(snake_head,apple,hash,board,level3);
@@ -443,6 +464,7 @@ void level_3(struct snake **snake_head,struct obj *apple,int hash[width][height]
   else if(state != 1)
     level_4(snake_head,apple,hash,board);
 }
+
 
 /*Function that handles game in level 2*/
 void level_2(struct snake **snake_head,struct obj *apple,int hash[width][height],char board[width][height])
@@ -454,6 +476,7 @@ void level_2(struct snake **snake_head,struct obj *apple,int hash[width][height]
   else if(state != 1)
     level_3(snake_head,apple,hash,board);
 }
+
 
 /*Function that handles game in level 1*/
 void level_1(struct snake **snake_head,struct obj *apple,int hash[width][height],char board[width][height])
@@ -470,10 +493,12 @@ void level_1(struct snake **snake_head,struct obj *apple,int hash[width][height]
 int main()
 {
   system("clear");
+  
   struct snake *snake_head = NULL;
   struct obj *apple = NULL; 
   char board[width][height];
   int hash[width][height] = {0},initial_score = 0;
+
   snake_head = initial_snake(snake_head,hash);
   apple = initial_food(hash);
   initial_board(board);
